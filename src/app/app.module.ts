@@ -18,8 +18,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { initApplication } from './app.initializer';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
-
-const config: SocketIoConfig = { url: environment.url, options: {} };
+import { SocketService } from './services/socket.service';
 
 export function jwtOptionsFactory(storage: Storage) {
   return {
@@ -47,7 +46,7 @@ export function jwtOptionsFactory(storage: Storage) {
         deps: [Storage],
       },
     }),
-    SocketIoModule.forRoot(config),
+    SocketIoModule.forRoot({ url: environment.url, options: {} }),
   ],
   providers: [
     StatusBar,
@@ -57,7 +56,7 @@ export function jwtOptionsFactory(storage: Storage) {
       provide: APP_INITIALIZER,
       useFactory: initApplication,
       multi: true,
-      deps: [Storage, Platform, JwtHelperService, AuthService],
+      deps: [Storage, Platform, JwtHelperService, AuthService, SocketService],
     },
   ],
   bootstrap: [AppComponent],

@@ -9,18 +9,18 @@ import { Platform, AlertController } from '@ionic/angular';
 import { Credentials } from '../models/credentials.model';
 import { tap, catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { SocketService } from './socket.service';
 
 export const TOKEN_KEY = 'access_token';
 export const EMAIL_KEY = 'email';
 export const PASSWORD_KEY = 'password';
+export const USER_INFO = 'user_info';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   url = environment.url;
-  authenticationState = new BehaviorSubject<User>(null);
+  private authenticationState: BehaviorSubject<User>;
 
   constructor(
     private http: HttpClient,
@@ -29,7 +29,6 @@ export class AuthService {
     private plt: Platform,
     private alertController: AlertController,
     private router: Router,
-    private socketService: SocketService,
   ) {}
 
   register(user: User, save: boolean = true) {
@@ -59,10 +58,8 @@ export class AuthService {
 
       const user = User.getUserFromResponse(res);
 
-      this.authenticationState.next(user);
-      this.socketService.onLogin(user.id);
-
-      console.log(this.authenticationState.value);
+      this.storage.set(USER_INFO, user);
+      this.getAuthStateSubject().next(user);
 
       this.router.navigate(['home']);
 
@@ -77,8 +74,9 @@ export class AuthService {
       this.storage.remove(TOKEN_KEY),
       this.storage.remove(EMAIL_KEY),
       this.storage.remove(PASSWORD_KEY),
+      this.storage.remove(USER_INFO),
     ]).then(() => {
-      this.authenticationState.next(null);
+      this.getAuthStateSubject().next(null);
       this.router.navigate(['initial']);
     });
   }
@@ -93,7 +91,12 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    return !!this.authenticationState.value;
+    return !!this.getAuthStateSubject().value;
+  }
+
+  getAuthStateSubject() {
+    this.authenticationState = this.authenticationState || new BehaviorSubject<User>(null);
+    return this.authenticationState;
   }
 
   async getSavedCredentials() {
