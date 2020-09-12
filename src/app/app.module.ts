@@ -12,13 +12,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { TOKEN_KEY, AuthService } from './services/auth.service';
-import { Interceptor } from './services/interceptor.module';
+import { TOKEN_KEY, AuthService } from './core/services/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { initApplication } from './app.initializer';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
-import { SocketService } from './services/socket.service';
+import { SocketService } from './core/services/socket.service';
+import { CoreModule } from './core/core.module';
 
 export function jwtOptionsFactory(storage: Storage) {
   return {
@@ -36,7 +36,7 @@ export function jwtOptionsFactory(storage: Storage) {
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    Interceptor,
+    CoreModule,
     HttpClientModule,
     IonicStorageModule.forRoot(),
     JwtModule.forRoot({

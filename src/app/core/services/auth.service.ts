@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { User } from '../models/user.model';
+import { User } from '../../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Storage } from '@ionic/storage';
 import { Platform, AlertController } from '@ionic/angular';
-import { Credentials } from '../models/credentials.model';
+import { Credentials } from '../../models/credentials.model';
 import { tap, catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -15,9 +15,7 @@ export const EMAIL_KEY = 'email';
 export const PASSWORD_KEY = 'password';
 export const USER_INFO = 'user_info';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AuthService {
   url = environment.url;
   private authenticationState: BehaviorSubject<User>;

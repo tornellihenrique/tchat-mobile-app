@@ -9,26 +9,26 @@
 
 <ion-content>
   <ion-list class="ion-no-padding">
-    <ion-item *ngFor="let chat of chatData" (click)="goforChat(chat)">
+    <ion-item *ngFor="let chat of chats" (click)="goforChat(chat)">
       <ion-avatar slot="start">
-        <ion-img class="user-img" [src]="chat.image"></ion-img>
-        <div class="online" *ngIf="chat.status == 'online'">
+        <!-- <ion-img class="user-img" [src]="chat.image"></ion-img> -->
+        <!-- <div class="online" *ngIf="chat.status == 'online'">
         </div>
         <div class="ofline" *ngIf="chat.status == 'ofline'">
-        </div>
+        </div> -->
       </ion-avatar>
       <ion-label>
         <div class="withcount">
           <div class="nameAvatar">
-            <h2>{{chat.name}}
+            <h2>{{chat?.recipient?.name}}
             </h2>
-            <ion-avatar class="chatCount" *ngIf="chat.count">{{chat.count}}</ion-avatar>
+            <!-- <ion-avatar class="chatCount" *ngIf="chat.count">{{chat.count}}</ion-avatar> -->
           </div>
           <div class="timeEnd">
-            <ion-text slot="end">{{chat.time}}</ion-text>
+            <ion-text slot="end">{{chat?.lastMessage?.date | lastMessageDate}}</ion-text>
           </div>
         </div>
-        <p class="widthHalf">{{chat.description}}</p>
+        <p class="widthHalf">{{chat?.lastMessage?.text}}</p>
       </ion-label>
     </ion-item>
   </ion-list>

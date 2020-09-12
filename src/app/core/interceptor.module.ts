@@ -3,7 +3,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, from, of } from 'rxjs';
 import { tap, switchMap, map, catchError } from 'rxjs/operators';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 import { AlertController } from '@ionic/angular';
 
 @Injectable()

@@ -7,36 +7,37 @@
       <img src="{{paramData.image}}">
     </ion-thumbnail> -->
     <ion-title>
-      {{paramData.name}}
+      {{chat?.recipient?.name}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content #IonContent fullscreen="true">
   <ion-list>
-    <div *ngFor="let chat of msgList; let i = index; ">
-      <ion-row *ngIf="chat.userId == User">
-        <ion-col class="right" class="ion-no-padding"
-          [ngClass]="{'clubbed':((msgList[i+1] && msgList[i+1].userId != chat.userId)|| !msgList[i+1])}">
+    <div *ngFor="let msg of messages; let i = index; ">
+      <ion-row *ngIf="msg.user?.id == user?.id">
+        <ion-col class="ion-no-padding right"
+          [ngClass]="{'clubbed':((messages[i+1] && messages[i+1].user?.id != chat.user?.id)|| !messages[i+1])}">
           <div class="imageAvatarRight">
             <div class="imageAvatarBottom">
-              <ion-avatar class="avatar" [ngClass]="(msgList[i+1] && msgList[i+1].userId == chat.userId)?'hidden':''">
+              <ion-avatar class="avatar"
+                [ngClass]="(messages[i+1] && messages[i+1].user?.id == chat.user?.id)?'hidden':''">
                 <div class="imageAvatarBottomIcon">
                   <ion-icon name="add" expand="icon-only" color="light"> </ion-icon>
                 </div>
-                <ion-img class="user-img" [src]="paramData.image"></ion-img>
+                <!-- <ion-img class="user-img" [src]="paramData.image"></ion-img> -->
               </ion-avatar>
             </div>
             <ion-label color="light">
-              <div class="chatDiv" [ngClass]="{'sharper':((msgList[i+1] && msgList[i+1].userId == chat.userId) && 
-              (msgList[i-1] && msgList[i-1].userId == chat.userId)),
-              'sharper-top':(msgList[i-1] && msgList[i-1].userId == chat.userId),
-              'sharper-bottom':(msgList[i+1] && msgList[i+1].userId == chat.userId)}">
-                <p class="ion-text-wrap" class="ion-padding">{{chat.message}}
+              <div class="chatDiv" [ngClass]="{'sharper':((messages[i+1] && messages[i+1].user?.id == chat.user?.id) && 
+              (messages[i-1] && messages[i-1].user?.id == chat.user?.id)),
+              'sharper-top':(messages[i-1] && messages[i-1].user?.id == chat.user?.id),
+              'sharper-bottom':(messages[i+1] && messages[i+1].user?.id == chat.user?.id)}">
+                <p class="ion-text-wrap" class="ion-padding">
+                  {{msg.text}}
                 </p>
                 <div class="corner-parent-right">
                   <div class="corner-child-right">
-
                   </div>
                 </div>
               </div>
@@ -44,36 +45,39 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="chat.userId == toUser">
-        <ion-col class="left" class="ion-no-padding"
-          [ngClass]="{'clubbed':((msgList[i+1] && msgList[i+1].userId != chat.userId)|| !msgList[i+1])}">
+      <ion-row *ngIf="msg.user?.id != user?.id">
+        <ion-col class="ion-no-padding left"
+          [ngClass]="{'clubbed':((messages[i+1] && messages[i+1].user?.id != chat.user?.id)|| !messages[i+1])}">
           <div class="imageAvatarLeft">
             <ion-label color="light">
-              <div class="chatDiv" [ngClass]="{'sharper':((msgList[i+1] && msgList[i+1].userId == chat.userId) && 
-              (msgList[i-1] && msgList[i-1].userId == chat.userId)),
-              'sharper-top':(msgList[i-1] && msgList[i-1].userId == chat.userId),
-              'sharper-bottom':(msgList[i+1] && msgList[i+1].userId == chat.userId)}">
-                <p class="ion-text-wrap" class="ion-padding">{{chat.message}}</p>
+              <div class="chatDiv" [ngClass]="{'sharper':((messages[i+1] && messages[i+1].user?.id == chat.user?.id) && 
+              (messages[i-1] && messages[i-1].user?.id == chat.user?.id)),
+              'sharper-top':(messages[i-1] && messages[i-1].user?.id == chat.user?.id),
+              'sharper-bottom':(messages[i+1] && messages[i+1].user?.id == chat.user?.id)}">
+                <p class="ion-text-wrap" class="ion-padding">
+                  {{msg.text}}
+                </p>
                 <div class="corner-parent-left">
                   <div class="corner-child-left">
                   </div>
                 </div>
               </div>
             </ion-label>
-            <div class="imageAvatarBottom">
-              <ion-avatar class="avatar" [ngClass]="(msgList[i+1] && msgList[i+1].userId == chat.userId)?'hidden':''">
+            <!-- <div class="imageAvatarBottom">
+              <ion-avatar class="avatar"
+                [ngClass]="(messages[i+1] && messages[i+1].user?.id == chat.user?.id)?'hidden':''">
                 <div class="imageAvatarBottomIcon">
                   <ion-icon name="add" expand="icon-only" color="light"> </ion-icon>
                 </div>
                 <ion-img class="user-img" src="../../../assets/chat/pagas.jpg"></ion-img>
               </ion-avatar>
-            </div>
+            </div> -->
           </div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="((msgList[i+1] && msgList[i+1].userId != chat.userId)|| !msgList[i+1])">
+      <ion-row *ngIf="((messages[i+1] && messages[i+1].user?.id != chat.user?.id)|| !messages[i+1])">
         <ion-col>
-          <ion-text>{{chat.time}}</ion-text>
+          <ion-text>{{msg.date | hoursMinutes}}</ion-text>
         </ion-col>
       </ion-row>
     </div>
@@ -92,7 +96,7 @@
           <ion-avatar class="avatar">
             <div class="imageAvatarBottomIcon">
             </div>
-            <ion-img src="{{paramData.image}}"></ion-img>
+            <!-- <ion-img src="{{paramData.image}}"></ion-img> -->
           </ion-avatar>
         </div>
         <ion-label>
