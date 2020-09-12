@@ -12,22 +12,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content #IonContent fullscreen="true">
+<ion-content #IonContent [scrollEvents]="true" (ionScroll)="logScrolling($event)">
   <ion-list>
     <div *ngFor="let msg of messages; let i = index; ">
       <ion-row *ngIf="msg.user?.id == user?.id">
-        <ion-col class="ion-no-padding right"
+        <ion-col class="ion-no-padding left"
           [ngClass]="{'clubbed':((messages[i+1] && messages[i+1].user?.id != chat.user?.id)|| !messages[i+1])}">
           <div class="imageAvatarRight">
-            <div class="imageAvatarBottom">
+            <!-- <div class="imageAvatarBottom">
               <ion-avatar class="avatar"
                 [ngClass]="(messages[i+1] && messages[i+1].user?.id == chat.user?.id)?'hidden':''">
                 <div class="imageAvatarBottomIcon">
                   <ion-icon name="add" expand="icon-only" color="light"> </ion-icon>
                 </div>
-                <!-- <ion-img class="user-img" [src]="paramData.image"></ion-img> -->
+                <ion-img class="user-img" [src]="paramData.image"></ion-img>
               </ion-avatar>
-            </div>
+            </div> -->
             <ion-label color="light">
               <div class="chatDiv" [ngClass]="{'sharper':((messages[i+1] && messages[i+1].user?.id == chat.user?.id) && 
               (messages[i-1] && messages[i-1].user?.id == chat.user?.id)),
@@ -46,7 +46,7 @@
         </ion-col>
       </ion-row>
       <ion-row *ngIf="msg.user?.id != user?.id">
-        <ion-col class="ion-no-padding left"
+        <ion-col class="ion-no-padding right"
           [ngClass]="{'clubbed':((messages[i+1] && messages[i+1].user?.id != chat.user?.id)|| !messages[i+1])}">
           <div class="imageAvatarLeft">
             <ion-label color="light">
@@ -75,11 +75,11 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="((messages[i+1] && messages[i+1].user?.id != chat.user?.id)|| !messages[i+1])">
+      <!-- <ion-row *ngIf="((messages[i+1] && messages[i+1].user?.id != chat.user?.id)|| !messages[i+1])">
         <ion-col>
           <ion-text>{{msg.date | hoursMinutes}}</ion-text>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
     </div>
   </ion-list>
 

@@ -73,6 +73,7 @@ export class SocketService {
 
     for (const c of chats) {
       if (c.id === chat.id) {
+        c.lastMessage = chat.lastMessage;
         c.messages ? c.messages.push(message) : (c.messages = [message]);
         this.getChatsSubject().next(chats);
 

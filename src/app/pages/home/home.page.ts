@@ -21,6 +21,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.socket.findAllChats();
 
     this.subscription = this.socket.getChatsSubject().subscribe(chats => {
+      console.log(chats);
       this.chats = chats;
     });
   }
@@ -31,10 +32,11 @@ export class HomePage implements OnInit, OnDestroy {
 
   segmentChanged(event: any) {
     this.segmentTab = event.detail.value;
-    console.log(this.segmentTab);
   }
 
   goforChat(chat: Chat) {
-    this.router.navigate(['chat', chat.id]);
+    if (chat && chat.recipient) {
+      this.router.navigate(['chat', chat.recipient.id]);
+    }
   }
 }

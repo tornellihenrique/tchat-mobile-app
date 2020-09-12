@@ -25,22 +25,27 @@ export class ChatPage implements OnInit, OnDestroy {
   chat: Chat;
   user: User;
 
-  constructor(public activRoute: ActivatedRoute, private socket: SocketService, private authService: AuthService) {}
+  isScrollInTopBottom = false;
+
+  constructor(public activRoute: ActivatedRoute, private socket: SocketService, private authService: AuthService) {
+    this.scrollDown();
+  }
 
   ngOnInit() {
     this.recipientId = this.activRoute.snapshot.params.id;
-    console.log(this.recipientId);
 
     this.socket.findChatMessages(this.recipientId);
 
     this.s1 = this.authService.getAuthStateSubject().subscribe(user => {
-      console.log(user);
       this.user = user;
     });
 
     this.s2 = this.socket.getChatsSubject().subscribe(chats => {
-      console.log(chats);
       this.chat = chats.find(c => c.recipient.id === this.recipientId);
+
+      if (this.isScrollInTopBottom) {
+        this.scrollDown();
+      }
     });
   }
 
@@ -75,10 +80,26 @@ export class ChatPage implements OnInit, OnDestroy {
 
   userTyping(event: any) {
     this.startTyping = event.target.value;
-    this.scrollDown();
   }
 
   get messages() {
     return this.chat ? this.chat.messages : [];
+  }
+
+  async logScrolling($event: any) {
+    if ($event.target.localName !== 'ion-content') {
+      return;
+    }
+
+    const scrollElement = await $event.target.getScrollElement();
+    const scrollHeight = scrollElement.scrollHeight - scrollElement.clientHeight;
+
+    const currentScrollDepth = $event.detail.scrollTop;
+
+    const targetPercent = 80;
+
+    const triggerDepth = (scrollHeight / 100) * targetPercent;
+
+    this.isScrollInTopBottom = currentScrollDepth > triggerDepth;
   }
 }
